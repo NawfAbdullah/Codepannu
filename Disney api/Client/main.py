@@ -1,8 +1,34 @@
 import base64                  
 import requests
 from PIL import Image
+
+
+##########################################################################################
+######################## Getting by name and saving the image ############################
+##########################################################################################
+
+mickey = requests.get(f'http://localhost:3000/name/micKeyMoUse',params={'apiKey':'codepannustudent'})
+print(mickey.json())
+with open('mickeyy.png','wb') as f:
+  f.write(base64.b64decode(mickey.json()[0]['img']))
+
+im = Image.open('./mickeyy.png')
+im.show()
+
+##################################################################
+################ Getting by gender ###############################
+##################################################################
+
+mini = requests.get(f'http://localhost:3000/gender/female',params={'apiKey':'codepannustudent'})
+print(mini.json())
+with open('mini.png','wb') as f:
+  f.write(base64.b64decode(mini.json()[0]['img']))
+  print('wrote')
+
+
+
 #######################################################################
-#########################Getting and saving image data ################
+#########################Getting and saving a image data ################
 #######################################################################
 
 response = requests.get('http://localhost:3000')
@@ -41,23 +67,4 @@ id_to_delete = '62149c240a428e01b5d5fd21'
 deleting = requests.delete(f'http://localhost:3000/{id_to_delete}',params={'apiKey':'codepannustudent'})
 #print(deleting.json())
 
-
-#####################################################################
-######################## Getting by name ############################
-#####################################################################
-
-mickey = requests.get(f'http://localhost:3000/name/micKeyMoUse',params={'apiKey':'codepannustudent'})
-print(mickey.json())
-with open('mickeyy.png','wb') as f:
-  f.write(base64.b64decode(mickey.json()[0]['img']))
-
-im = Image.open('./mickeyy.png')
-im.show()
-
-
-mini = requests.get(f'http://localhost:3000/gender/female',params={'apiKey':'codepannustudent'})
-print(mini.json())
-with open('mini.png','wb') as f:
-  f.write(base64.b64decode(mini.json()[0]['img']))
-  print('wrote')
 
