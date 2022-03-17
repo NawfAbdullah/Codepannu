@@ -2,12 +2,20 @@ import base64
 import requests
 from PIL import Image
 
+response = requests.get('https://codepannu-disney.herokuapp.com/')
+x = [i['_id'] for i in response.json()]
+print(x)
+for n,i in enumerate(x):
+  with open(f'{i}.jpg','wb') as f:
+    f.write(base64.b64decode(response.json()[n]['img']))
+    print('wrote')
+
 
 ##########################################################################################
 ######################## Getting by name and saving the image ############################
 ##########################################################################################
 
-mickey = requests.get(f'http://localhost:3000/name/micKeyMoUse',params={'apiKey':'codepannustudent'})
+mickey = requests.get(f'https://codepannu-disney.herokuapp.com/name/micKeyMoUse',params={'apiKey':'codepannustudent'})
 print(mickey.json())
 with open('mickeyy.png','wb') as f:
   f.write(base64.b64decode(mickey.json()[0]['img']))
@@ -19,7 +27,7 @@ im.show()
 ################ Getting by gender ###############################
 ##################################################################
 
-mini = requests.get(f'http://localhost:3000/gender/female',params={'apiKey':'codepannustudent'})
+mini = requests.get(f'https://codepannu-disney.herokuapp.com/gender/female',params={'apiKey':'codepannustudent'})
 print(mini.json())
 with open('mini.png','wb') as f:
   f.write(base64.b64decode(mini.json()[0]['img']))
@@ -27,44 +35,27 @@ with open('mini.png','wb') as f:
 
 
 
-#######################################################################
-#########################Getting and saving a image data ################
-#######################################################################
-
-response = requests.get('http://localhost:3000')
-x = [i['_id'] for i in response.json()]
-print(x)
-filename = input("Enter the filename with extention: ")
-with open(filename,'wb') as f:
-  f.write(base64.b64decode(response.json()[-1]['img']))
-  print('wrote')
-
 #####################################################################
 ###################### posting data #################################
 #####################################################################
 
-character = {
-  'name':'Minnie Mouse',
-  'designedby':'Walt Disney,',
-  'img':'',
-  'firstAppeared': 'Steamboat Willie',
-  'gender':'Female'
-  }
-
-with open('Minnie_Mouse.png','rb') as f:
-  character['img'] = base64.b64encode(f.read()).decode("utf8")
+##Data alreadt exists
 
 
-response = requests.post('http://localhost:3000',params={'apiKey':'codepannustudent'},data=character)
-print(response.json())
+# character = {
+#   'name':'MinnieMouse',
+#   'designedby':'Walt Disney,',
+#   'img':'',
+#   'firstAppeared': 'Steamboat Willie',
+#   'gender':'Female'
+#   }
+
+# with open('Minnie_Mouse.png','rb') as f:
+#   character['img'] = base64.b64encode(f.read()).decode("utf8")
 
 
+# response = requests.post('http://localhost:3000',params={'apiKey':'codepannustudent'},data=character)
+# print(response.json())
 
-#######################################################################
-###########################Deleting####################################
-#######################################################################
-id_to_delete = '62149c240a428e01b5d5fd21'
-deleting = requests.delete(f'http://localhost:3000/{id_to_delete}',params={'apiKey':'codepannustudent'})
-#print(deleting.json())
 
 
